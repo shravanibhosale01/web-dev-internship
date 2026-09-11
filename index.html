@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Website</title>
+</head>
+<body>
+
+    <!-- Header with navigation -->
+    <header id="top">
+        <h1>Shravani Bhosale</h1>
+        <nav>
+            <a href="#about">About</a> |
+            <a href="#skills">Skills</a> |
+            <a href="#gallery">Gallery</a> |
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- About section -->
+        <section id="about" class="section">
+            <h2>About Me</h2>
+            <p>
+                Hi! I'm a Computer Engineering student currently exploring web
+                development and modern technologies. I'm learning HTML, CSS,
+                Python and JavaScript while building practical projects and improving my
+                programming skills. This website is one of my first projects,
+                created to practice HTML concepts such as headings, paragraphs,
+                links, and semantic HTML tags.
+            </p>
+        </section>
+
+        <!-- Skills section -->
+        <section id="skills" class="section">
+            <h2>My Skills</h2>
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Python</li>
+                <li>JavaScript</li>
+                <li>Problem Solving</li>
+                <li>Git &amp; GitHub basics</li>
+            </ul>
+        </section>
+
+        <!-- Image gallery section -->
+        <section id="gallery" class="section">
+            <h2>Simple Image Gallery</h2>
+            <div class="gallery">
+                <img src="images/image1.jpg" alt="Mountain landscape">
+                <img src="images/image2.jpg" alt="Canyon landscape">
+                <img src="images/image3.jpg" alt="Forest landscape">
+                
+            </div>
+        </section>
+
+        <!-- Contact form section -->
+        <section id="contact" class="section">
+            <h2>Contact Me</h2>
+            <form action="#" method="post">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" placeholder="Your name"
+                       required minlength="2" maxlength="50"><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" placeholder="you@example.com"
+                       required><br><br>
+
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="5" placeholder="Your message"
+                          required minlength="10" maxlength="500"></textarea><br><br>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 My First Website. <a href="#top">Back to top</a></p>
+    </footer>
+
+</body>
+</html>

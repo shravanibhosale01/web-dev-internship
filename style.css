@@ -1,0 +1,479 @@
+/* ==========================================================
+   Reset default styles
+   ========================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ==========================================================
+   Color scheme & custom fonts (CSS variables)
+   ========================================================== */
+:root {
+    --gradient: linear-gradient(135deg, #6a5cf5 0%, #21c9c9 100%);
+    --dark: #1b1633;
+    --accent: #ff7a59;
+    --bg-color: #f4f2ff;
+    --card-bg: #ffffff;
+    --text-color: #2e2b45;
+    --muted: #7a7591;
+    --heading-font: 'Poppins', sans-serif;
+    --body-font: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--body-font);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+h1, h2 {
+    font-family: var(--heading-font);
+}
+
+/* ==========================================================
+   Header / hero (gradient + Flexbox layout)
+   ========================================================== */
+header#top {
+    background: var(--gradient);
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(106, 92, 245, 0.25);
+}
+
+.header-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    position: relative;
+}
+
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.tagline {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 0.15rem;
+}
+
+nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* element selector + pseudo-class selector */
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 30px;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================
+   CSS-only hamburger menu (checkbox hack)
+   ========================================================== */
+.nav-toggle {
+    display: none;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 200;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* animate hamburger into an X when checked */
+.nav-toggle:checked ~ .hamburger span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.nav-toggle:checked ~ .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+.nav-toggle:checked ~ .hamburger span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ==========================================================
+   Main content sections
+   ========================================================== */
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+}
+
+/* class selector */
+.section {
+    background-color: var(--card-bg);
+    margin: 0 0 2rem 0;
+    padding: 2.25rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(27, 22, 51, 0.06);
+    border-top: 4px solid transparent;
+    border-image: var(--gradient) 1;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(27, 22, 51, 0.1);
+}
+
+.section h2 {
+    color: var(--dark);
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.4rem;
+}
+
+.section h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 48px;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--gradient);
+}
+
+/* id selector */
+#about p {
+    font-size: 1.05rem;
+    color: var(--text-color);
+}
+
+/* ==========================================================
+   Skills list (Flexbox layout, icon badges)
+   ========================================================== */
+.skills-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+}
+
+.skills-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gradient);
+    color: #ffffff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.skills-list li:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 18px rgba(106, 92, 245, 0.35);
+}
+
+.skills-list .icon {
+    font-size: 1.1rem;
+}
+
+/* ==========================================================
+   Image gallery (CSS Grid layout, hover captions)
+   ========================================================== */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.gallery figure {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(27, 22, 51, 0.1);
+}
+
+.gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.gallery figure:hover img {
+    transform: scale(1.08);
+}
+
+.gallery figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.75rem;
+    background: linear-gradient(0deg, rgba(27, 22, 51, 0.85), rgba(27, 22, 51, 0));
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery figure:hover figcaption {
+    transform: translateY(0);
+}
+
+/* ==========================================================
+   Contact form
+   ========================================================== */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 500px;
+}
+
+.contact-form label {
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 0.7rem 0.9rem;
+    border: 1.5px solid #e3e0f5;
+    border-radius: 8px;
+    font-family: var(--body-font);
+    font-size: 1rem;
+    background-color: #faf9ff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #6a5cf5;
+    box-shadow: 0 0 0 4px rgba(106, 92, 245, 0.15);
+}
+
+/* ==========================================================
+   Floating labels (pure CSS, no JavaScript)
+   Uses :placeholder-shown + :focus so the label animates up
+   only once the field is focused or filled in.
+   ========================================================== */
+.field {
+    position: relative;
+    margin-top: 0.6rem;
+}
+
+.field label {
+    position: absolute;
+    left: 0.9rem;
+    top: 0.7rem;
+    font-size: 1rem;
+    color: var(--muted);
+    background-color: #faf9ff;
+    padding: 0 0.3rem;
+    pointer-events: none;
+    transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+.field textarea ~ label {
+    top: 1rem;
+}
+
+.field input:focus ~ label,
+.field input:not(:placeholder-shown) ~ label,
+.field textarea:focus ~ label,
+.field textarea:not(:placeholder-shown) ~ label {
+    transform: translateY(-1.35rem);
+    font-size: 0.78rem;
+    color: #6a5cf5;
+    font-weight: 600;
+}
+
+/* class selector + pseudo-class selector (hover effect on buttons) */
+.btn {
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start;
+    margin-top: 1rem;
+    padding: 0.8rem 2rem;
+    background: var(--gradient);
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+}
+
+.btn:hover::before {
+    left: 130%;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(106, 92, 245, 0.4);
+}
+
+.btn:active {
+    transform: translateY(-1px) scale(0.97);
+}
+
+/* ==========================================================
+   Footer
+   ========================================================== */
+footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================
+   Floating back-to-top button
+   ========================================================== */
+.back-to-top {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--gradient);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(106, 92, 245, 0.4);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 150;
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px) scale(1.08);
+    box-shadow: 0 10px 24px rgba(106, 92, 245, 0.5);
+}
+
+/* ==========================================================
+   Responsive design (media query for mobile screens)
+   ========================================================== */
+@media (max-width: 600px) {
+    .hamburger {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+    }
+
+    .nav-toggle:checked ~ nav {
+        max-height: 300px;
+        padding-top: 0.75rem;
+    }
+
+    nav a {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 0.4rem;
+    }
+
+    .header-inner {
+        align-items: flex-start;
+    }
+
+    .section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery figcaption {
+        transform: translateY(0);
+    }
+
+    .btn {
+        align-self: stretch;
+        text-align: center;
+    }
+
+    .back-to-top {
+        bottom: 1.25rem;
+        right: 1.25rem;
+        width: 42px;
+        height: 42px;
+    }
+}

@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Header with navigation -->
     <header id="top">
-        <h1>Shravani Bhosale</h1>
-        <nav>
-            <a href="#about">About</a> |
-            <a href="#skills">Skills</a> |
-            <a href="#gallery">Gallery</a> |
-            <a href="#contact">Contact</a>
-        </nav>
+        <div class="header-inner">
+            <div class="brand">
+                <h1>Shravani Bhosale</h1>
+                <p class="tagline">Computer Engineering Student &middot; Aspiring Web Developer</p>
+            </div>
+
+            <!-- CSS-only hamburger toggle (checkbox hack) -->
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+            <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <nav>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
     </header>
 
     <main>
@@ -25,8 +42,8 @@
             <h2>About Me</h2>
             <p>
                 Hi! I'm a Computer Engineering student currently exploring web
-                development and modern technologies. I'm learning HTML, CSS,
-                Python and JavaScript while building practical projects and improving my
+                development and modern technologies. I'm learning HTML, CSS, and
+                JavaScript while building practical projects and improving my
                 programming skills. This website is one of my first projects,
                 created to practice HTML concepts such as headings, paragraphs,
                 links, and semantic HTML tags.
@@ -36,13 +53,12 @@
         <!-- Skills section -->
         <section id="skills" class="section">
             <h2>My Skills</h2>
-            <ul>
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>Python</li>
-                <li>JavaScript</li>
-                <li>Problem Solving</li>
-                <li>Git &amp; GitHub basics</li>
+            <ul class="skills-list">
+                <li><span class="icon">🌐</span> HTML</li>
+                <li><span class="icon">🎨</span> CSS</li>
+                <li><span class="icon">⚡</span> JavaScript (learning)</li>
+                <li><span class="icon">🧩</span> Problem Solving</li>
+                <li><span class="icon">🔧</span> Git &amp; GitHub basics</li>
             </ul>
         </section>
 
@@ -50,34 +66,51 @@
         <section id="gallery" class="section">
             <h2>Simple Image Gallery</h2>
             <div class="gallery">
-                <img src="images/image1.jpg" alt="Mountain landscape">
-                <img src="images/image2.jpg" alt="Canyon landscape">
-                <img src="images/image3.jpg" alt="Forest landscape">
-                
+                <figure>
+                    <img src="https://picsum.photos/id/1015/300/200" alt="Mountain landscape">
+                    <figcaption>Fjord Views</figcaption>
+                </figure>
+                <figure>
+                    <img src="https://picsum.photos/id/1016/300/200" alt="Canyon view">
+                    <figcaption>Canyon Sunset</figcaption>
+                </figure>
+                <figure>
+                    <img src="https://picsum.photos/id/1018/300/200" alt="Forest river">
+                    <figcaption>Highland Roads</figcaption>
+                </figure>
             </div>
         </section>
 
         <!-- Contact form section -->
         <section id="contact" class="section">
             <h2>Contact Me</h2>
-            <form action="#" method="post">
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name" placeholder="Your name"
-                       required minlength="2" maxlength="50"><br><br>
+            <form class="contact-form" action="#" method="post">
+                <div class="field">
+                    <input type="text" id="name" name="name" placeholder=" "
+                           required minlength="2" maxlength="50">
+                    <label for="name">Name</label>
+                </div>
 
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" placeholder="you@example.com"
-                       required><br><br>
+                <div class="field">
+                    <input type="email" id="email" name="email" placeholder=" "
+                           required>
+                    <label for="email">Email</label>
+                </div>
 
-                <label for="message">Message:</label><br>
-                <textarea id="message" name="message" rows="5" placeholder="Your message"
-                          required minlength="10" maxlength="500"></textarea><br><br>
+                <div class="field">
+                    <textarea id="message" name="message" rows="5" placeholder=" "
+                              required minlength="10" maxlength="500"></textarea>
+                    <label for="message">Message</label>
+                </div>
 
-                <button type="submit">Send Message</button>
+                <button type="submit" class="btn">Send Message</button>
             </form>
         </section>
 
     </main>
+
+    <!-- Floating back-to-top button -->
+    <a href="#top" class="back-to-top" aria-label="Back to top">↑</a>
 
     <!-- Footer -->
     <footer>

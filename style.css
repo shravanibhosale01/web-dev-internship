@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* ==========================================================
    Color scheme & custom fonts (CSS variables)
    ========================================================== */
@@ -27,6 +31,29 @@ body {
     color: var(--text-color);
     background-color: var(--bg-color);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================
+   Dark mode (toggled via JavaScript, class on <body>)
+   ========================================================== */
+body.dark-mode {
+    --bg-color: #14101f;
+    --card-bg: #1f1a33;
+    --text-color: #e8e5f5;
+    --muted: #a29bc2;
+    --dark: #f4f2ff;
+}
+
+body.dark-mode .field label {
+    background-color: #29233f;
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+    background-color: #29233f;
+    border-color: #3d3560;
+    color: var(--text-color);
 }
 
 h1, h2 {
@@ -93,11 +120,48 @@ nav a:hover {
     transform: translateY(-2px);
 }
 
+/* Highlighted by JS (Intersection Observer) to match the section in view */
+nav a.active-link {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--dark);
+    border-color: #ffffff;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   Dark/light mode toggle button
+   ========================================================== */
+.theme-toggle {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: rotate(15deg);
+}
+
 /* ==========================================================
    CSS-only hamburger menu (checkbox hack)
    ========================================================== */
 .nav-toggle {
     display: none;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .hamburger {
@@ -149,12 +213,32 @@ main {
     box-shadow: 0 6px 24px rgba(27, 22, 51, 0.06);
     border-top: 4px solid transparent;
     border-image: var(--gradient) 1;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.6s ease;
 }
 
 .section:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 32px rgba(27, 22, 51, 0.1);
+}
+
+/* ==========================================================
+   Scroll-reveal animation (JS adds .reveal-visible via
+   Intersection Observer as each section enters the viewport)
+   ========================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* If a section is also hovered after revealing, let the hover lift still work */
+.reveal.reveal-visible:hover {
+    transform: translateY(-4px);
 }
 
 .section h2 {
@@ -222,6 +306,16 @@ main {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
+}
+
+.gallery-hint {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin: -0.5rem 0 1rem 0;
+}
+
+.gallery img {
+    cursor: pointer;
 }
 
 .gallery figure {
@@ -292,6 +386,60 @@ main {
     outline: none;
     border-color: #6a5cf5;
     box-shadow: 0 0 0 4px rgba(106, 92, 245, 0.15);
+}
+
+/* JS-driven validation states */
+.contact-form input.invalid,
+.contact-form textarea.invalid {
+    border-color: #e5484d;
+}
+
+.contact-form input.invalid:focus,
+.contact-form textarea.invalid:focus {
+    box-shadow: 0 0 0 4px rgba(229, 72, 77, 0.15);
+}
+
+.error-message {
+    display: block;
+    min-height: 1.1rem;
+    color: #e5484d;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+/* Layout wrapper so the error message and character counter sit side by side */
+.field-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.field-footer .error-message {
+    margin-top: 0;
+}
+
+.char-counter {
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.char-counter-warning {
+    color: #e5484d;
+    font-weight: 600;
+}
+
+.form-success {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    background-color: rgba(33, 201, 138, 0.12);
+    color: #159a63;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
 /* ==========================================================
@@ -393,6 +541,87 @@ footer a:hover {
 }
 
 /* ==========================================================
+   Lightbox (image gallery modal)
+   ========================================================== */
+.lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 8, 20, 0.92);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 300;
+    padding: 2rem;
+}
+
+.lightbox:not([hidden]) {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: min(90vw, 700px);
+    max-height: 70vh;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-caption {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.75rem;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.lightbox-close:hover {
+    transform: scale(1.2);
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #ffffff;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-nav:hover {
+    background-color: rgba(255, 255, 255, 0.28);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+    left: 1.5rem;
+}
+
+.lightbox-next {
+    right: 1.5rem;
+}
+
+/* ==========================================================
    Floating back-to-top button
    ========================================================== */
 .back-to-top {
@@ -410,8 +639,15 @@ footer a:hover {
     font-size: 1.3rem;
     text-decoration: none;
     box-shadow: 0 6px 18px rgba(106, 92, 245, 0.4);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
     z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .back-to-top:hover {

@@ -20,17 +20,20 @@
 
             <!-- CSS-only hamburger toggle (checkbox hack) -->
             <input type="checkbox" id="nav-toggle" class="nav-toggle">
-            <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
+            <div class="header-controls">
+                <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+                <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
 
-            <nav>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#contact">Contact</a>
+            <nav id="main-nav">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#gallery" class="nav-link">Gallery</a>
+                <a href="#contact" class="nav-link">Contact</a>
             </nav>
         </div>
     </header>
@@ -38,7 +41,7 @@
     <main>
 
         <!-- About section -->
-        <section id="about" class="section">
+        <section id="about" class="section reveal">
             <h2>About Me</h2>
             <p>
                 Hi! I'm a Computer Engineering student currently exploring web
@@ -51,7 +54,7 @@
         </section>
 
         <!-- Skills section -->
-        <section id="skills" class="section">
+        <section id="skills" class="section reveal">
             <h2>My Skills</h2>
             <ul class="skills-list">
                 <li><span class="icon">🌐</span> HTML</li>
@@ -63,59 +66,77 @@
         </section>
 
         <!-- Image gallery section -->
-        <section id="gallery" class="section">
+        <section id="gallery" class="section reveal">
             <h2>Simple Image Gallery</h2>
-            <div class="gallery">
+            <p class="gallery-hint">Click any photo to view it larger</p>
+            <div class="gallery" id="gallery-grid">
                 <figure>
-                    <img src="https://picsum.photos/id/1015/300/200" alt="Mountain landscape">
+                    <img src="https://picsum.photos/id/1015/300/200" alt="Mountain landscape" data-caption="Fjord Views">
                     <figcaption>Fjord Views</figcaption>
                 </figure>
                 <figure>
-                    <img src="https://picsum.photos/id/1016/300/200" alt="Canyon view">
+                    <img src="https://picsum.photos/id/1016/300/200" alt="Canyon view" data-caption="Canyon Sunset">
                     <figcaption>Canyon Sunset</figcaption>
                 </figure>
                 <figure>
-                    <img src="https://picsum.photos/id/1018/300/200" alt="Forest river">
+                    <img src="https://picsum.photos/id/1018/300/200" alt="Forest river" data-caption="Highland Roads">
                     <figcaption>Highland Roads</figcaption>
                 </figure>
             </div>
         </section>
 
         <!-- Contact form section -->
-        <section id="contact" class="section">
+        <section id="contact" class="section reveal">
             <h2>Contact Me</h2>
-            <form class="contact-form" action="#" method="post">
+            <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
                 <div class="field">
                     <input type="text" id="name" name="name" placeholder=" "
                            required minlength="2" maxlength="50">
                     <label for="name">Name</label>
+                    <span class="error-message" id="name-error"></span>
                 </div>
 
                 <div class="field">
                     <input type="email" id="email" name="email" placeholder=" "
                            required>
                     <label for="email">Email</label>
+                    <span class="error-message" id="email-error"></span>
                 </div>
 
                 <div class="field">
                     <textarea id="message" name="message" rows="5" placeholder=" "
                               required minlength="10" maxlength="500"></textarea>
                     <label for="message">Message</label>
+                    <div class="field-footer">
+                        <span class="error-message" id="message-error"></span>
+                        <span class="char-counter" id="message-counter">0 / 500</span>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn">Send Message</button>
+                <p class="form-success" id="form-success" hidden>✅ Message sent! Thanks for reaching out — I'll get back to you soon.</p>
             </form>
         </section>
 
     </main>
 
+    <!-- Lightbox for gallery images -->
+    <div class="lightbox" id="lightbox" hidden>
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+        <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">&#8249;</button>
+        <img src="" alt="" id="lightbox-img">
+        <p class="lightbox-caption" id="lightbox-caption"></p>
+        <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">&#8250;</button>
+    </div>
+
     <!-- Floating back-to-top button -->
-    <a href="#top" class="back-to-top" aria-label="Back to top">↑</a>
+    <a href="#top" class="back-to-top" id="back-to-top" aria-label="Back to top">↑</a>
 
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 My First Website. <a href="#top">Back to top</a></p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,98 +1,108 @@
-# My First Website — Styled Portfolio Project
+# My First Website — Interactive Portfolio Project
 
 ## Project Overview
 This is a personal portfolio website built as part of a web development
 internship. The site is a single-page portfolio with four sections — About,
-Skills, Gallery, and Contact — reachable through a sticky navigation
-header, styled with a gradient theme, custom fonts, Flexbox/Grid layouts,
-hover effects, a mobile hamburger menu, and animated floating form labels,
-all done in pure CSS with no JavaScript.
+Skills, Gallery, and Contact — made interactive with vanilla JavaScript:
+a dark/light mode toggle, a clickable image lightbox, real-time form
+validation with error messages, a live character counter, scroll-based nav
+highlighting, and scroll-reveal animations — all without any external
+libraries or frameworks.
 
 ---
 
-## CSS Concepts Used
+## JavaScript Features Implemented
 
-**Selectors**
-- **Element selectors** — e.g. `nav a`, `h1`, `h2` for baseline styling
-- **Class selectors** — e.g. `.section`, `.btn`, `.skills-list` for reusable
-  styling hooks
-- **ID selectors** — e.g. `#about p` for one-off targeting
-- **Pseudo-class selectors** — `:hover`, `:focus`, `:active`,
-  `:checked`, `:not(:placeholder-shown)` for interactive states
-- **Pseudo-element selectors** — `::before`, `::after` for decorative
-  accents (the button shine-sweep effect and the gradient underline
-  beneath section headings)
-- **Combinators** — the general sibling selector (`~`) to link the
-  hamburger checkbox and floating labels to elements that aren't their
-  direct parent
+**1. Dark / Light Mode Toggle**
+A button in the header toggles a `dark-mode` class on `<body>`, switching
+the site's color scheme. The chosen theme is saved to `localStorage`, so it
+persists across page reloads — on load, the script checks for a saved
+preference and applies it immediately.
 
-**Layout**
-- **Flexbox** — used for the header (logo + nav), the skills badge list,
-  and the contact form's vertical stacking
-- **CSS Grid** — used for the 3-column image gallery, which collapses to
-  a single column on mobile
-- **CSS variables (custom properties)** — `--gradient`, `--dark`,
-  `--accent`, etc. defined in `:root` for a consistent, easily-adjustable
-  color scheme throughout the site
+**2. Image Gallery Lightbox**
+Clicking any gallery photo opens a full-screen lightbox showing that image
+enlarged, with Previous/Next buttons to cycle through the gallery, a close
+button, and support for closing by clicking outside the image or pressing
+`Escape`. Arrow keys (`←` `→`) also navigate between images.
 
-**Box model & positioning**
-- `padding`, `margin`, and `border-radius` used throughout for card-style
-  sections and rounded buttons/badges
-- `position: sticky` on the header so navigation stays visible while
-  scrolling
-- `position: fixed` on the floating "back to top" button
-- `position: absolute` combined with a relative parent for the gallery
-  hover captions and the floating form labels
+**3. Real-Time Contact Form Validation**
+The contact form's Name, Email, and Message fields are validated with
+JavaScript rather than relying only on the browser's default validation:
+- Each field is checked as the user types (`input` event) and when they
+  leave the field (`blur` event)
+- A red error message appears beneath the exact field that's invalid,
+  explaining what's wrong (e.g. "Please enter a valid email address")
+- On submit, all three fields are re-validated; if everything passes, the
+  form resets and a success message appears for a few seconds
 
-**Interactivity (pure CSS, no JavaScript)**
-- **Mobile hamburger menu** — built using the "checkbox hack": a hidden
-  `<input type="checkbox">` paired with a `<label>` styled as a hamburger
-  icon. The `:checked` pseudo-class combined with the general sibling
-  selector (`~`) toggles the nav menu open/closed and animates the icon
-  into an X, entirely without JavaScript.
-- **Floating form labels** — labels sit inside the input by default and
-  animate upward when the field is focused or filled, using
-  `:focus` and `:not(:placeholder-shown)` (with `placeholder=" "` as the
-  trigger for the latter).
-- **Hover-reveal gallery captions** — each gallery image is wrapped in a
-  `<figure>`; the caption is positioned absolutely and slides up into
-  view via `transform: translateY()` on `:hover`.
-- **Button shine sweep** — a `::before` pseudo-element sweeps a light
-  gradient across the button on hover using a `transition` on `left`.
-- Smooth `transition`s are used throughout (badges lifting on hover,
-  cards lifting on hover, nav links glowing on hover) rather than
-  instant state changes, to make the site feel more polished.
+**4. Live Character Counter**
+The Message field shows a live "x / 500" counter that updates on every
+keystroke, and turns red once the user is close to the character limit.
+
+**5. Active Nav Link Highlighting**
+As the user scrolls, an `IntersectionObserver` detects which section is
+currently in view and highlights the matching navigation link, so it's
+always clear which part of the page you're looking at.
+
+**6. Scroll-Reveal Animations**
+Each section fades and slides into view the first time it scrolls into the
+viewport, using a second `IntersectionObserver` instance. Once a section
+has animated in, it stops being observed (so it doesn't repeat).
+
+**7. Scroll-Aware Back-to-Top Button**
+A floating button stays hidden until the user scrolls down more than
+300px, then fades in — implemented with a `scroll` event listener.
+
+---
+
+## Form Validation Logic (in detail)
+Validation is handled by three dedicated functions — `validateName()`,
+`validateEmail()`, and `validateMessage()` — each of which:
+1. Reads and trims the current field value
+2. Checks it against the relevant rule(s):
+   - **Name**: required, minimum 2 characters
+   - **Email**: required, must match a basic email pattern
+     (`text@text.text`) via a regular expression
+   - **Message**: required, minimum 10 characters
+3. Calls a shared `setFieldError()` helper to either display an error
+   message and mark the field red, or clear the error if the value is
+   now valid
+
+These functions are called both on every keystroke/blur (for instant
+feedback) and again on form submit — the submit handler uses
+`event.preventDefault()` to stop the page from reloading, checks all three
+fields together, and only shows the success message if every field passes.
+
+---
 
 ## Design Decisions
-- **Color scheme**: a purple-to-teal gradient (`#6a5cf5 → #21c9c9`) was
-  chosen as the primary brand identity, used consistently across the
-  header, buttons, skill badges, and section accents, so the whole page
-  feels cohesive rather than using isolated colors per section.
-- **Typography**: Google Fonts "Poppins" (bold, geometric) for headings
-  and "Inter" (clean, readable) for body text — a common pairing that
-  keeps headings distinct from paragraph text.
-- **Card-based layout**: each section is a rounded white card with a
-  subtle shadow and a gradient top border, which visually separates
-  content blocks and creates a sense of depth against the light
-  lavender page background.
-- **Micro-interactions**: hover lifts, glows, and the button shine sweep
-  were added so the page feels responsive to user interaction, not
-  static — this was intentionally kept to CSS only, to stay within the
-  Week 2 HTML/CSS-only scope.
+- **Native browser popups avoided**: the form uses `novalidate` so the
+  browser's default validation tooltips don't fire, letting the custom
+  JavaScript-driven error messages take over entirely for a more
+  consistent look and better control over messaging.
+- **Reusable, named functions**: rather than writing one large block of
+  logic, each feature (theme toggle, lightbox, validation, counter, nav
+  highlighting, reveal animation) is broken into small reusable functions
+  with clear responsibilities, making the code easier to read and test.
+- **`IntersectionObserver` over scroll math**: nav highlighting and
+  scroll-reveal both use `IntersectionObserver` instead of manually
+  calculating element positions on every scroll event, which is more
+  efficient and considered current best practice.
+- **Persisted preferences**: dark mode uses `localStorage` so a returning
+  visitor's preference is remembered, rather than resetting on every page
+  load.
 
-## Responsiveness Approach
-The layout is built mobile-first-friendly using a single breakpoint at
-`600px` via `@media (max-width: 600px)`:
-- The header switches from a horizontal nav bar to a collapsible
-  hamburger menu
-- The 3-column image gallery collapses to a single column
-- Section padding and margins shrink slightly to save space
-- The submit button stretches to full width for easier tapping
-- The floating back-to-top button shrinks slightly
-
-This was tested using the browser's built-in device toolbar (Chrome
-DevTools → Toggle device toolbar) across several simulated phone widths,
-as well as by manually resizing the browser window.
+## Interactive Elements Summary
+| Element | Trigger | Feedback |
+|---|---|---|
+| Theme toggle button | `click` | Instantly switches colors site-wide; persists on reload |
+| Gallery photos | `click` | Opens lightbox with that image |
+| Lightbox prev/next | `click` / arrow keys | Cycles through gallery images |
+| Lightbox close | `click` (button, overlay, or `Escape`) | Closes the lightbox |
+| Form fields | `input` / `blur` | Shows/clears validation error instantly |
+| Form submit | `submit` | Validates all fields, shows success message |
+| Message field | `input` | Updates live character counter |
+| Page scroll | `scroll` | Highlights current nav link, reveals sections, shows/hides back-to-top button |
 
 ---
 
@@ -102,26 +112,24 @@ navigation menu in the header:
 
 1. **About** — a short introduction about myself
 2. **Skills** — a list of skills, shown as icon badges
-3. **Gallery** — an image gallery with hover-reveal captions
-4. **Contact** — a contact form with floating labels and input validation
-
-A floating "back to top" button and a footer link both return to the top
-of the page.
+3. **Gallery** — an image gallery with a clickable lightbox
+4. **Contact** — a contact form with real-time validation
 
 ## File Structure
 ```
 project-folder/
 ├── index.html
 ├── style.css
+├── script.js
 ├── README.md
 ├── images/
 │   ├── image1.jpg
 │   ├── image2.jpg
 │   └── image3.jpg
 └── screenshots/
-    ├── desktop-about-skills.png
-    ├── desktop-gallery-contact.png
-    └── mobile-nav-menu.png
+    ├── dark-mode-nav.png
+    ├── gallery-lightbox.png
+    └── form-validation-counter.png
 ```
 
 ## Setup Instructions
@@ -130,53 +138,53 @@ project-folder/
 3. Open the folder in VS Code and use the "Live Server" extension for a
    live preview while editing.
 
-No build tools, package managers, or dependencies are required — this is
-a static HTML/CSS site. `style.css` is linked from `index.html` via a
-`<link>` tag, and fonts are loaded from Google Fonts over a CDN link.
+No build tools, package managers, or external JavaScript libraries are
+required — `script.js` is plain vanilla JavaScript, linked at the bottom
+of `index.html` via a `<script>` tag.
 
 ---
 
 ## Visual Documentation
 
-**Desktop — About and Skills sections:**
+**Dark mode with active nav link highlighting:**
 
-![Desktop about and skills screenshot](screenshots/desktop-about-skills.png)
+![Dark mode and nav highlighting screenshot](screenshots/dark-mode-nav.png)
 
-**Desktop — Gallery hover caption and floating form labels:**
+**Gallery lightbox open:**
 
-![Desktop gallery and contact screenshot](screenshots/desktop-gallery-contact.png)
+![Gallery lightbox screenshot](screenshots/gallery-lightbox.png)
 
-**Mobile — Hamburger menu open:**
+**Form validation with live character counter:**
 
-![Mobile navigation menu screenshot](screenshots/mobile-nav-menu.png)
+![Form validation and character counter screenshot](screenshots/form-validation-counter.png)
 
 ## Testing
 Testing was done manually in the browser, since this is a static
-front-end project with no backend logic:
+front-end project with no backend server:
 
-- Verified the page loads correctly via Live Server
-- Clicked every navigation link (About, Skills, Gallery, Contact) to
-  confirm each one scrolls to the correct section
-- Tested the contact form's HTML5 validation: empty fields, invalid
-  email format, and message length limits all correctly trigger
-  browser warnings
-- Tested the floating labels by focusing, typing into, and clearing each
-  field to confirm the label animates up/down correctly
-- Tested the hamburger menu on mobile width: opened and closed it
-  multiple times, confirmed the icon animates into an X and back
-- Resized the browser window across several widths (and used Chrome
-  DevTools device toolbar) to confirm the layout adapts smoothly with no
-  overlapping or cut-off content
-- Hovered over all interactive elements (nav links, skill badges,
-  gallery images, the submit button) to confirm hover states and
-  transitions work as intended
+- Toggled dark/light mode repeatedly and refreshed the page to confirm
+  the preference persists via `localStorage`
+- Opened the lightbox from each of the three gallery images, and tested
+  the Previous/Next buttons, the close (×) button, clicking outside the
+  image, the `Escape` key, and the `←`/`→` arrow keys
+- Tested form validation by:
+  - Submitting the form completely empty
+  - Entering an invalid email (missing `@`, missing domain)
+  - Entering a name shorter than 2 characters
+  - Entering a message shorter than 10 characters
+  - Filling in all fields correctly and confirming the success message
+    appears and the form resets
+- Watched the character counter update in real time while typing, and
+  confirmed it turns red near the 500-character limit
+- Scrolled the full page slowly and confirmed the correct nav link
+  highlights at each section, and that each section fades in only once
+- Scrolled past 300px and back to confirm the back-to-top button fades
+  in/out correctly, and that clicking it smoothly scrolls to the top
 - Checked the HTML structure using the [W3C Markup Validator](https://validator.w3.org/)
   to confirm no syntax errors
 
 ## Notes
-- This project intentionally uses CSS only (no JavaScript) — all
-  interactivity (hamburger menu, floating labels, hover effects) is
-  achieved with pure CSS techniques such as the checkbox hack and
-  `:focus`/`:not()` pseudo-classes.
+- All interactivity is implemented in vanilla JavaScript with no external
+  libraries or frameworks.
 - The images used in the gallery are stored locally in the `images/`
   folder.
